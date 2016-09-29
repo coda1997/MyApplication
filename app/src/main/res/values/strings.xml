@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="button_name">登录</string>
+    <string name="text1_name">学号：</string>
+    <string name="text2_name">密码：</string>
+    <string name="text3_name">验证码：</string>
+
+</resources>
