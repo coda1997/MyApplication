@@ -17,6 +17,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 
 
 import java.io.ByteArrayOutputStream;
@@ -34,6 +35,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
     private Button button_login;
+    private Button button_reset;
     private String resString = "";
     private EditText textView_name;
     private EditText textView_key;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String timetableUrl;
     private boolean flag = false;
     private String[] sessionid;
+    private String session;
     private String pwd;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -60,14 +63,22 @@ public class MainActivity extends AppCompatActivity {
         textView_key = (EditText) findViewById(R.id.editText);
         textxdvfb = (EditText)findViewById(R.id.editText3);
         imageView = (ImageView)findViewById(R.id.imageView);
+        button_reset = (Button)findViewById(R.id.button_reset);
         new DownImgAsyncTask().execute("http://210.42.121.241/servlet/GenImg");
         flag = false;
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You clicked Button_login", Toast.LENGTH_SHORT).show();
+
                 login(button_login);
+                //输入错误提醒
+//                if(flag==true){
+//                    Toast.makeText(MainActivity.this, "输入错误，请重试", Toast.LENGTH_SHORT).show();
+//
+//                }
+                session = new String(sessionid[0]);
                 new DownImgAsyncTask().execute("http://210.42.121.241/servlet/GenImg");
+
 
                         /* 新建一个Intent对象 */
 
@@ -79,7 +90,17 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        button_reset.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Toast.makeText(MainActivity.this,"验证码已刷新",Toast.LENGTH_SHORT).show();
+                new DownImgAsyncTask().execute("http://210.42.121.241/servlet/GenImg");
 
+
+            }
+
+
+        });
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -87,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void login(View v){
         //Log.i(Tag,"error");
-
+        flag = false;
 
         final String userName = textView_name.getText().toString();
         final String password = textView_key.getText().toString();
@@ -95,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         pwd = getMD5Str(password);
 
         if(TextUtils.isEmpty(userName)||TextUtils.isEmpty(password)) {
-                    Toast.makeText(this, "number and password cannot be empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "账号密码不能为空，请重试", Toast.LENGTH_LONG).show();
                 }else {
                     Thread thread = new Thread() {
                         public void run(){
@@ -169,75 +190,86 @@ public class MainActivity extends AppCompatActivity {
                 *
                 *
                 * */
-//                org.jsoup.nodes.Document doc = Jsoup.parse(result);
-//                org.jsoup.nodes.Element titleEle = doc.getElementById("left_bar");
-//                org.jsoup.nodes.Element frameEle = titleEle.getElementById("page_iframe");
-//                String tableUrl = new String(frameEle.attr("src"));
-//                System.out.println("succeed");
-//                Log.i(Tag_2,"succeed");
-//                //Log.i(Tag_2,result);
-//                timetableUrl = new String("http://210.42.121.241"+tableUrl);
-//                //Log.i(Tag_2,result);
-//                Log.i(Tag_2,timetableUrl);
-//                try {
-//                    URL resurl = null;
-//                    resurl = new URL(timetableUrl);
-//                    HttpURLConnection resurlConnection = (HttpURLConnection) resurl.openConnection();
-//                    resurlConnection.setRequestMethod("GET");
-//                    resurlConnection.setRequestProperty("Cookie",sessionid[0]);
-//                    resurlConnection.setRequestProperty("Referer","http://210.42.121.241/stu/stu_index.jsp");
-//                    resurlConnection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
-//                    resurlConnection.setReadTimeout(5000);
-//                    resurlConnection.setConnectTimeout(5000);
-//                    resurlConnection.connect();
-//                    if (resurlConnection.getResponseCode() == 200) {
-//                        InputStream resis = resurlConnection.getInputStream();
-//                        ByteArrayOutputStream resbaos = new ByteArrayOutputStream();
+                org.jsoup.nodes.Document doc = Jsoup.parse(result);
+                //判断返回是否正确
+
+                final String titleName = doc.title();
+                Log.i(Tag_2,titleName);
+
+                if(!titleName.equals("武汉大学教务管理系统")){
+                    org.jsoup.nodes.Element titleEle = doc.getElementById("left_bar");
+                    org.jsoup.nodes.Element frameEle = titleEle.getElementById("page_iframe");
+                    String tableUrl = new String(frameEle.attr("src"));
+                    System.out.println("succeed");
+                    Log.i(Tag_2,"succeed");
+                    //Log.i(Tag_2,result);
+                    timetableUrl = new String("http://210.42.121.241"+tableUrl);
+                    //Log.i(Tag_2,result);
+
+                    Log.i(Tag_2,timetableUrl);
+//                    try {
+//                        URL resurl = null;
+//                        resurl = new URL(timetableUrl);
+//                        HttpURLConnection resurlConnection = (HttpURLConnection) resurl.openConnection();
+//                        resurlConnection.setRequestMethod("POST");
+//                        resurlConnection.setRequestProperty("Cookie",sessionid[0]);
+//                        resurlConnection.setReadTimeout(5000);
+//                        resurlConnection.setConnectTimeout(5000);
+//                        resurlConnection.connect();
+//                        if (resurlConnection.getResponseCode() == 200) {
+//                            InputStream resis = resurlConnection.getInputStream();
+//                            ByteArrayOutputStream resbaos = new ByteArrayOutputStream();
 //
-//                        int reslen = 0;
-//                        byte resbuffer[] = new byte[1024];
-//                        StringBuilder rescontent = new StringBuilder();
+//                            int reslen = 0;
+//                            byte resbuffer[] = new byte[1024];
+//                            StringBuilder rescontent = new StringBuilder();
 //
-//                        while ((reslen = resis.read(resbuffer))!=-1){
-//                            //   baos.write(buffer,0,len);
-//                            rescontent.append(new String(resbuffer, 0, reslen, "gb2312"));
+//                            while ((reslen = resis.read(resbuffer))!=-1){
+//                                //   baos.write(buffer,0,len);
+//                                rescontent.append(new String(resbuffer, 0, reslen, "gb2312"));
+//                            }
+//                            resis.close();
+//                            resbaos.close();
+//
+//                            final String resresult = new String(rescontent.toString());
+//                            Log.i(Tag_2,"result"+resresult);
+//                        }else {
+//                            Log.i(Tag_2,"disconneted");
 //                        }
-//                        resis.close();
-//                        resbaos.close();
-//
-//                        final String resresult = new String(rescontent.toString());
-//                        Log.i(Tag_2,"result"+resresult);
-//                    }else {
-//                        Log.i(Tag_2,"disconneted");
+//                    } catch (MalformedURLException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
 //                    }
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
 
-
-                Thread thread_1 = new Thread(){
-                    public void run(){
-                        Intent intent = new Intent();
-                        //intent.putExtra("timetableUrl",timetableUrl);
-                        intent.putExtra("result",result);
-                        intent.putExtra("Sessionid",sessionid[0]);
+                    //调用timetableActivity并传值
+                    Thread thread_1 = new Thread(){
+                        public void run(){
+                            Intent intent = new Intent();
+                            //intent.putExtra("timetableUrl",timetableUrl);
+                            intent.putExtra("result",timetableUrl);
+                            intent.putExtra("Sessionid",session);
                             /* 指定intent要启动的类 */
-                        intent.setClass(MainActivity.this, TimetableActivity.class);
+                            intent.setClass(MainActivity.this, TimetableActivity.class);
         /* 启动一个新的Activity */
-                        MainActivity.this.startActivity(intent);
+                            MainActivity.this.startActivity(intent);
         /* 关闭当前的Activity */
-                        MainActivity.this.finish();
-                    }
+                            MainActivity.this.finish();
+                        }
 
-                };
-                thread_1.start();
+                    };
+                    thread_1.start();
+
+                }else{
+                    flag=true;
+                }
 
             }else{
                 System.out.println("unconnected...");
                 Log.i("login","fail");
             }
+
+
 
 
 
@@ -327,6 +359,8 @@ public class MainActivity extends AppCompatActivity {
         //16位加密，从第9位到25位
         return md5StrBuff.toString().toLowerCase();
     }
+
+
 
 
 }

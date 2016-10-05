@@ -28,11 +28,12 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:ems="10"
         android:id="@+id/editText2"
         android:layout_marginTop="78dp"
         android:hint="  请输入学号"
+
         android:singleLine="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView"
@@ -41,7 +42,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:ems="10"
         android:layout_below="@+id/editText2"
         android:layout_alignLeft="@+id/editText2"
@@ -88,16 +89,6 @@
         android:layout_marginLeft="19dp"
         android:layout_marginStart="19dp" />
 
-    <Button
-        android:text="@string/button_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText3"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="64dp"
-        android:id="@+id/button_login" />
-
     <ImageView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -108,5 +99,29 @@
         android:layout_below="@+id/editText"
         android:layout_toRightOf="@+id/textView3"
         android:layout_above="@+id/editText3" />
+
+    <Button
+        android:text="@string/button_name_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_reset"
+        android:layout_alignBaseline="@+id/button_login"
+        android:layout_alignBottom="@+id/button_login"
+        android:layout_toRightOf="@+id/button_login"
+        android:layout_toEndOf="@+id/button_login"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp" />
+
+    <Button
+        android:text="@string/button_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:id="@+id/button_login"
+        android:layout_below="@+id/editText3"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_marginLeft="38dp"
+        android:layout_marginStart="38dp" />
 
 </RelativeLayout>
