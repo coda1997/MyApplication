@@ -1,6 +1,6 @@
 ## MyApplication
 <b>阶段一完成<br>
-<b>阶段二结束<br>
+阶段二结束</b><br>
 使用recycleview和cardview进行布局<br>
 
 
